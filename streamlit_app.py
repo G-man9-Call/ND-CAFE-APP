@@ -46,9 +46,6 @@ if 'start_time' not in st.session_state:
 col1, col2 = st.columns(2)
 
 with col1:
-    # --- แก้ไขส่วน Clock In --- 
-    if st.button(" CLOCK IN", use_container_width=True):
-
 # --- แก้ไขส่วน Clock In ---
 if st.button("🚀 CLOCK IN", use_container_width=True):
     # ใช้เวลาซิดนีย์แทน datetime.now() ปกติ
