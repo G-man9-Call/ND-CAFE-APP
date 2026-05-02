@@ -4,8 +4,7 @@ import sqlite3
 from datetime import datetime
 import pytz
 
-# ฟังก์ชันสำหรับดึงเวลาปัจจุบันของ ซิดนีย์
-
+# ฟังก์ชันสำหรับดึงเวลาปัจจุบันของซิดนีย์
 def get_sydney_time():
     sydney_tz = pytz.timezone('Australia/Sydney')
     return datetime.now(sydney_tz)
@@ -32,10 +31,10 @@ def init_db():
 init_db()
 
 # --- ส่วนหัวแอป ---
-# ดึงเวลาซิดนีย์มาแสดง
- 
+st.markdown("<h1 style='text-align: center; color: #8B4513;'>☕ ND CAFE LOG</h1>", unsafe_allow_html=True)
 curr_time = get_sydney_time().strftime("%d/%m/%Y %H:%M:%S")
 st.markdown(f"<p style='text-align: center;'>🇦🇺 Sydney Time: {curr_time}</p>", unsafe_allow_html=True)
+
 # --- ส่วนของการ Clock In/Out ---
 st.divider()
 
@@ -46,17 +45,18 @@ if 'start_time' not in st.session_state:
 col1, col2 = st.columns(2)
 
 with col1:
-# --- แก้ไขส่วน Clock In ---
-if st.button("🚀 CLOCK IN", use_container_width=True):
-    # ใช้เวลาซิดนีย์แทน datetime.now() ปกติ
-    st.session_state.start_time = get_sydney_time() 
-    st.success(f"เริ่มงานตอน: {st.session_state.start_time.strftime('%H:%M')}")
+    if st.button("🚀 CLOCK IN", use_container_width=True):
+        st.session_state.start_time = get_sydney_time() 
+        st.success(f"เริ่มงานตอน: {st.session_state.start_time.strftime('%H:%M')}")
+
 with col2:
-# --- แก้ไขส่วน Clock Out ---
-if st.button("🛑 CLOCK OUT", use_container_width=True):
-    if st.session_state.start_time:
-        end_time = get_sydney_time() # ใช้เวลาซิดนีย์
-        
+    if st.button("🛑 CLOCK OUT", use_container_width=True):
+        if st.session_state.start_time:
+            end_time = get_sydney_time()
+            # คำนวณจำนวนชั่วโมง (จุดที่เพิ่มเข้ามา)
+            duration = end_time - st.session_state.start_time
+            hours = round(duration.total_seconds() / 3600, 2)
+            
             # ปรับอัตราค่าจ้างตรงนี้
             hourly_rate = 30 
             pay = round(hours * hourly_rate, 2)
@@ -84,6 +84,7 @@ st.divider()
 st.subheader("📊 ประวัติการทำงาน")
 
 conn = sqlite3.connect(DB_NAME)
+# ดึงข้อมูลมาแสดงผล
 df = pd.read_sql_query("SELECT date as 'วันที่', start_time as 'เริ่ม', end_time as 'เลิก', hours as 'ชม.', pay as 'เงิน ($)' FROM shifts ORDER BY id DESC", conn)
 conn.close()
 
@@ -95,7 +96,7 @@ if not df.empty:
     st.download_button(
         label="📥 ดาวน์โหลดประวัติเป็น CSV",
         data=csv,
-        file_name=f'work_log_{datetime.now().strftime("%Y%m%d")}.csv',
+        file_name=f'work_log_{get_sydney_time().strftime("%Y%m%d")}.csv',
         mime='text/csv',
     )
 else:
