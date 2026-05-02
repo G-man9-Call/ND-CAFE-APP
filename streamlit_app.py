@@ -2,7 +2,15 @@ import streamlit as st
 import pandas as pd
 import sqlite3
 from datetime import datetime
-import time
+import pytz
+
+# ฟังก์ชันสำหรับดึงเวลาปัจจุบันของ ซิดนีย์
+
+def get_sydney_time():
+
+sydney_tz =
+
+pytz.timezone('Australia/Sydney') return datetime.now(sydney_tz)
 
 # --- การตั้งค่าหน้าจอ ---
 st.set_page_config(page_title="ND Cafe Log", page_icon="☕", layout="centered")
@@ -26,9 +34,8 @@ def init_db():
 init_db()
 
 # --- ส่วนหัวแอป ---
-st.markdown("<h1 style='text-align: center; color: #8B4513;'>☕ ND CAFE LOG</h1>", unsafe_allow_html=True)
-curr_time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-st.markdown(f"<p style='text-align: center;'>{curr_time}</p>", unsafe_allow_html=True)
+# ดึงเวลาซิดนีย์มาแสดง
+ curr_time = get_sydney_time().strftime("%d/ %m/%Y %H:%M:%S") st.markdown(f"<p style='text-align: center;'> Sydney Time: {curr_time} </p>", unsafe_allow_html=True)
 
 # --- ส่วนของการ Clock In/Out ---
 st.divider()
@@ -40,16 +47,21 @@ if 'start_time' not in st.session_state:
 col1, col2 = st.columns(2)
 
 with col1:
-    if st.button("🚀 CLOCK IN", use_container_width=True):
-        st.session_state.start_time = datetime.now()
-        st.success(f"เริ่มงานตอน: {st.session_state.start_time.strftime('%H:%M')}")
+    # --- แก้ไขส่วน 
+    Clock In --- if st.button(" CLOCK IN", use_container_width=True):
+
+# ใช้เวลาซิดนีย์แทน datetime.now()
+
+st.session_state.start_time = get_sydney_time()
+
+st.success(f"เริ่มงานตอน: {st.sessi on_state.start_time.strftime('%H: %M')}")
 
 with col2:
-    if st.button("🛑 CLOCK OUT", use_container_width=True):
-        if st.session_state.start_time:
-            end_time = datetime.now()
-            duration = end_time - st.session_state.start_time
-            hours = round(duration.total_seconds() / 3600, 2)
+   # --- แก้ไขส่วน Clock Out ---
+if st.button("🛑 CLOCK OUT", use_container_width=True):
+    if st.session_state.start_time:
+        end_time = get_sydney_time() # ใช้เวลาซิดนีย์
+        
             # ปรับอัตราค่าจ้างตรงนี้
             hourly_rate = 30 
             pay = round(hours * hourly_rate, 2)
