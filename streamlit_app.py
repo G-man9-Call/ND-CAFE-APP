@@ -49,14 +49,13 @@ with col1:
     # --- แก้ไขส่วน Clock In --- 
     if st.button(" CLOCK IN", use_container_width=True):
 
-# ใช้เวลาซิดนีย์แทน datetime.now()
+# --- แก้ไขส่วน Clock In ---
+if st.button("🚀 CLOCK IN", use_container_width=True):
+    # ใช้เวลาซิดนีย์แทน datetime.now() ปกติ
+    st.session_state.start_time = get_sydney_time() 
+    st.success(f"เริ่มงานตอน: {st.session_state.start_time.strftime('%H:%M')}")
 
-st.session_state.start_time = get_sydney_time()
-
-st.success(f"เริ่มงานตอน: {st.sessi on_state.start_time.strftime('%H: %M')}")
-
-with col2:
-   # --- แก้ไขส่วน Clock Out ---
+# --- แก้ไขส่วน Clock Out ---
 if st.button("🛑 CLOCK OUT", use_container_width=True):
     if st.session_state.start_time:
         end_time = get_sydney_time() # ใช้เวลาซิดนีย์
