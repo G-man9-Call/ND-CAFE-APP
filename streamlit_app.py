@@ -7,10 +7,8 @@ import pytz
 # ฟังก์ชันสำหรับดึงเวลาปัจจุบันของ ซิดนีย์
 
 def get_sydney_time():
-
-sydney_tz =
-
-pytz.timezone('Australia/Sydney') return datetime.now(sydney_tz)
+    sydney_tz = pytz.timezone('Australia/Sydney')
+    return datetime.now(sydney_tz)
 
 # --- การตั้งค่าหน้าจอ ---
 st.set_page_config(page_title="ND Cafe Log", page_icon="☕", layout="centered")
