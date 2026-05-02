@@ -33,8 +33,9 @@ init_db()
 
 # --- ส่วนหัวแอป ---
 # ดึงเวลาซิดนีย์มาแสดง
- curr_time = get_sydney_time().strftime("%d/ %m/%Y %H:%M:%S") st.markdown(f"<p style='text-align: center;'> Sydney Time: {curr_time} </p>", unsafe_allow_html=True)
-
+ 
+curr_time = get_sydney_time().strftime("%d/%m/%Y %H:%M:%S")
+st.markdown(f"<p style='text-align: center;'>🇦🇺 Sydney Time: {curr_time}</p>", unsafe_allow_html=True)
 # --- ส่วนของการ Clock In/Out ---
 st.divider()
 
